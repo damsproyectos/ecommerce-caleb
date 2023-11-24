@@ -33,4 +33,31 @@
 
 @push('scripts')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+
+    <script>
+        $(document).ready(function(){
+            $('body').on('click', '.change-status', function(){
+                //alert('hello'); ****Éste alert es para probar que el código esté funcionando
+                let isChecked = $(this).is(':checked');
+                //console.log(isChecked); *****Muestra en pantalla el resultado
+                let id = $(this).data('id');
+                //console.log(id);  *****Muestra en pantalla el resultado
+                $.ajax({
+                    url: "{{route('admin.category.change-status')}}",
+                    method: 'PUT',
+                    data: {
+                        status: isChecked,
+                        id: id
+                    },
+                    success: function(data){
+                      //console.log(data);
+                      toastr.success(data.message)
+                    },
+                    error: function(xhr, status, error){
+                      console.log(error);
+                    }
+                })
+            })
+        })
+    </script>
 @endpush
