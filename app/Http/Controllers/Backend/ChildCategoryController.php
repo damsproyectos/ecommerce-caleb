@@ -96,7 +96,7 @@ class ChildCategoryController extends Controller
         $request->validate([
             'category'      => ['required'],
             'sub_category'  => ['required'],
-            'name'          => ['required', 'max:200', 'unique:child_categories,name,'.$id], // aca esta el error name'.$id
+            'name'          => ['required', 'max:200', 'unique:child_categories,name,'.$id], // aca esta el error después del name no se le había colocado la coma para separarlo del .$id
             'status'        => ['required']
         ]);
 
