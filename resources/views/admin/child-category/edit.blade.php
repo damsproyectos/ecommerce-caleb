@@ -17,27 +17,36 @@
 
                   </div>
                   <div class="card-body">
-                    <form action="{{route('admin.sub-category.update', $subCategory->id)}}" method="POST">
+                    <form action="{{route('admin.child-category.update', $childCategory->id)}}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
                             <label for="inputState">Category</label>
-                            <select id="inputState" class="form-control" name="category">
+                            <select id="inputState" class="form-control main-category" name="category">
                                 <option value="">Select</option>
                                 @foreach ($categories as $category)
-                                    <option {{$category->id == $subCategory->category_id ? 'selected' : ''}} value="{{$category->id}}">{{$category->name}}</option>
+                                    <option {{$category->id == $childCategory->category_id ? 'selected' : ''}} value="{{$category->id}}">{{$category->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputState">Sub Category</label>
+                            <select id="inputState" class="form-control sub-category" name="sub_category">
+                                <option value="">Select</option>
+                                @foreach ($subCategories as $subCategory)
+                                <option {{$subCategory->id == $childCategory->sub_category_id ? 'selected' : ''}} value="{{$subCategory->id}}">{{$subCategory->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" name="name" value="{{$subCategory->name}}">
+                            <input type="text" class="form-control" name="name" value="{{$childCategory->name}}">
                         </div>
                         <div class="form-group">
                             <label for="inputState">Status</label>
                             <select id="inputState" class="form-control" name="status">
-                                <option {{$subCategory->status == 1 ? 'selected': ''}} value="1">Active</option>
-                                <option {{$subCategory->status == 0 ? 'selected': ''}} value="0">Inactive</option>
+                                <option {{$childCategory->status == 1 ? 'selected' : ''}} value="1">Active</option>
+                                <option {{$childCategory->status == 0 ? 'selected' : ''}} value="0">Inactive</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Update</button>
@@ -53,3 +62,33 @@
 
 @endsection
 
+@push('scripts')
+    <script>
+        $(document).ready(function(){
+           $('body').on('change', '.main-category', function(e){
+                //alert('hello'); ****Nos ayuda a hacer pruebas
+                let id = $(this).val();
+                //console.log(id); ****Para revisar en Cosola si está agarrando el id de categoría; si está funcionando el código
+                $.ajax({
+                  method: 'GET',
+                  url: "{{route('admin.get-subcategories')}}",
+                  data: {
+                    id:id
+                  },
+                  success: function(data){
+                    //   console.log(data);
+                      $('.sub-category').html('<option value="">Select</option>')
+
+                      $.each(data, function(i, item){
+                            //console.log(item.name);
+                            $('.sub-category').append(`<option value="${item.id}">${item.name}</option>`)
+                    })
+                  },
+                  error: function(xhr, status, error){
+                        console.log(error);
+                  }
+                })
+              })
+        })
+    </script>
+@endpush

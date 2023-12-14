@@ -80,7 +80,11 @@ class ChildCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $categories = Category::all();
+        $childCategory = ChildCategory::findOrFail($id);
+        $subCategories = SubCategory::where('category_id', $childCategory->category_id)->get();
+        /****dd($subCategories);  ****** Me ayuda a comprobar que si estamos recibiendo el valor de subcategoría *** */
+        return view('admin.child-category.edit', compact('categories', 'childCategory', 'subCategories'));
     }
 
     /**
@@ -88,7 +92,27 @@ class ChildCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        //dd($request->all());
+        $request->validate([
+            'category'      => ['required'],
+            'sub_category'  => ['required'],
+            'name'          => ['required', 'max:200', 'unique:child_categories,name,'.$id], // aca esta el error name'.$id
+            'status'        => ['required']
+        ]);
+
+        $childCategory = ChildCategory::findOrFail($id);
+        //dd($request->all());
+
+        $childCategory->category_id = $request->category;
+        $childCategory->sub_category_id = $request->sub_category;
+        $childCategory->name = $request->name;
+        $childCategory->slug = Str::slug($request->name);
+        $childCategory->status = $request->status;
+        $childCategory->save();
+
+        toastr('Update Successfully!', 'success');
+
+        return redirect()->route('admin.child-category.index');
     }
 
     /**
@@ -96,6 +120,18 @@ class ChildCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $childCategory = ChildCategory::findOrFail($id);
+        $childCategory->delete();
+
+        return response(['status' => 'success', 'message' => 'Delete Successfuly!']);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $category = ChildCategory::findOrFail($request->id);
+        $category->status = $request->status == 'true' ? 1 : 0;
+        $category->save();
+
+        return response(['message' => 'Status has been updated!']);
     }
 }
