@@ -141,7 +141,8 @@
                             }else if (data.status == 'error'){
                                 Swal.fire(
                                     'Cant Deleted!',
-                                    data.message
+                                    data.message,
+                                    'error'
                                 )
                             }
                         },
