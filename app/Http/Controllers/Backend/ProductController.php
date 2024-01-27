@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\ProductDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
+use App\Models\ChildCategory;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -23,7 +26,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.product.create', compact('categories'));
+        $brands = Brand::all();
+        return view('admin.product.create', compact('categories', 'brands'));
     }
 
     /**
@@ -71,6 +75,16 @@ class ProductController extends Controller
      */
     public function getSubCategories(Request $request)
     {
-        dd($request->all()); //Volcado de datos de la base de datos.
+        // dd($request->all()); //Volcado de datos de la base de datos.
+        $subCategories = SubCategory::where('category_id', $request->id)->get();
+
+        return $subCategories;
+    }
+
+    public function getChildCategories(Request $request)
+    {
+        $childCategories = ChildCategory::where('sub_category_id', $request->id)->get();
+
+        return $childCategories;
     }
 }
