@@ -17,7 +17,7 @@
                     <h4>Create Product</h4>
                   </div>
                   <div class="card-body">
-                    <form action="{{route('admin.slider.store')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('admin.products.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label>Image</label>
@@ -45,7 +45,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="inputState">Sub Category</label>
-                                    <select id="inputState" class="form-control sub-category" name="sub-category">
+                                    <select id="inputState" class="form-control sub-category" name="sub_category">
                                         <option value="">Select</option>
                                     </select>
                                 </div>
@@ -63,7 +63,7 @@
 
                         <div class="form-group">
                             <label for="inputState">Brand</label>
-                            <select id="inputState" class="form-control child-category" name="brand">
+                            <select id="inputState" class="form-control" name="brand">
                                 <option value="">Select</option>
                                 @foreach ($brands as $brand)
                                     <option value="{{$brand->id}}">{{$brand->name}}</option>
