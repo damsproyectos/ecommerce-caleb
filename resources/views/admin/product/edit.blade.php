@@ -17,8 +17,9 @@
                     <h4>Update Product</h4>
                   </div>
                   <div class="card-body">
-                    <form action="{{route('admin.products.store')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('admin.products.update', $product->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="form-group">
                             <label>Preview</label>
                             <br>
@@ -162,7 +163,7 @@
                                 <option {{$product->status == 0 ? 'selected' : ''}} value="0">Inactive</option>
                             </select>
                         </div>
-                        <button type="submmit" class="btn btn-primary">Create</button>
+                        <button type="submmit" class="btn btn-primary">Update</button>
                     </form>
                   </div>
 
