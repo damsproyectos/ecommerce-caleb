@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('product_image_galleries', function (Blueprint $table) {
             $table->id();
+            $table->text('image');
+            $table->integer('product_id');
             $table->timestamps();
         });
     }
